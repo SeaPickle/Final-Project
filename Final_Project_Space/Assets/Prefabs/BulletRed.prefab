@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8884610082288232987}
   - component: {fileID: 7793895320925233386}
   - component: {fileID: 4380172528111894021}
+  - component: {fileID: 7674585692943650055}
   m_Layer: 0
   m_Name: BulletRed
   m_TagString: Untagged
@@ -28,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 750937820271216035}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.265, y: 0.95, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_LocalScale: {x: 0.15, y: 0.15, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -72,7 +73,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 6b821612ce6f44d43a107699d3d589aa, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -131,3 +132,16 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.35723096, y: 1.0017606}
   m_EdgeRadius: 0
+--- !u!114 &7674585692943650055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 750937820271216035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11e4039992ad08a4da4bf3063cb378eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hitEffect: {fileID: 8522138926694928871, guid: 099831c921ff04f40be263e17bb36237, type: 3}

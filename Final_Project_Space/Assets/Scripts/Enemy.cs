@@ -12,12 +12,19 @@ public class Enemy : MonoBehaviour
 
     private Transform target;
 
+    void Start()
+    {
+        canAttack = 0f;
+    }
+    
     void Update()
     {
         if (target != null)
         {
             float step = speed * Time.deltaTime;
             transform.position = Vector2.MoveTowards(transform.position, target.position, step);
+
+            canAttack += Time.deltaTime;
         }
     }
 
@@ -30,12 +37,6 @@ public class Enemy : MonoBehaviour
                 other.gameObject.GetComponent<PlayerHealth>().UpdateHealth(-attackDamage);
                 canAttack = 0f;
             }
-
-            else
-            {
-                canAttack += Time.deltaTime;
-            }
-
         }
     }
 

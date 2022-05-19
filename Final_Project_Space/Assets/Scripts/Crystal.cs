@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RandomRotation : MonoBehaviour
+public class Crystal : MonoBehaviour
 {
     Quaternion begin;
     Quaternion end;

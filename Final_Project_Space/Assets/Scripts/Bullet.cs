@@ -11,6 +11,7 @@ public class Bullet : MonoBehaviour
     {
         if (collision.gameObject.tag == "Enemy")
         {
+            Score.scoreValue += 15;
             Destroy(collision.gameObject);
         }
 

@@ -30,11 +30,11 @@ public class Enemy : MonoBehaviour
 
     private void OnCollisionStay2D(Collision2D other)
     {
-        if (other.gameObject.tag == "Player")
+        if (other.gameObject.tag == "Player" || other.gameObject.tag == "Crystal")
         {
             if (attackSpeed <= canAttack)
             {
-                other.gameObject.GetComponent<PlayerHealth>().UpdateHealth(-attackDamage);
+                other.gameObject.GetComponent<Entity>().ChangeHealth(-attackDamage);
                 canAttack = 0f;
             }
         }
@@ -42,7 +42,7 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Player")
+        if (other.gameObject.tag == "Crystal")
         {
             target = other.transform;
         }
@@ -50,7 +50,7 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Player")
+        if (other.gameObject.tag == "Crystal")
         {
             target = null;
         }

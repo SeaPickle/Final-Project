@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : Entity
 {
 
     public float speed = 3f;
@@ -10,19 +10,38 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float attackSpeed = 1f;
     private float canAttack;
 
-    private Transform target;
+    Transform target;
+    Rigidbody2D rb;
+
+    [SerializeField]
+    float Integrity
+    {
+        get { return integrity; }
+        set { integrity = value; }
+    }
+    [SerializeField]
+    float MaxIntegrity
+    {
+        get { return maxIntegrity; }
+        set { maxIntegrity = value; }
+    }
 
     void Start()
     {
         canAttack = 0f;
+        rb = GetComponent<Rigidbody2D>();
     }
     
-    void Update()
+    void FixedUpdate()
     {
+        target = GameManager.crystal.transform;
         if (target != null)
         {
             float step = speed * Time.deltaTime;
-            transform.position = Vector2.MoveTowards(transform.position, target.position, step);
+            Vector2 dir = ((Vector2)(target.position-transform.position)).normalized;
+            rb.MovePosition((Vector2)transform.position + dir * step);
+            //rb.AddForce(dir * step * 10);
+            //transform.position = Vector2.MoveTowards(transform.position, target.position, step);
 
             canAttack += Time.deltaTime;
         }
@@ -39,20 +58,20 @@ public class Enemy : MonoBehaviour
             }
         }
     }
-
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.tag == "Crystal")
+        if (other.gameObject.tag == "Player" || other.gameObject.tag == "Crystal")
         {
-            target = other.transform;
+            if (attackSpeed <= canAttack)
+            {
+                other.gameObject.GetComponent<Entity>().ChangeHealth(-attackDamage);
+                canAttack = 0f;
+            }
         }
     }
 
-    private void OnTriggerExit2D(Collider2D other)
+    public override void OnDeath()
     {
-        if (other.gameObject.tag == "Crystal")
-        {
-            target = null;
-        }
+        Destroy(gameObject);
     }
 }

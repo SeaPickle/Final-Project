@@ -6,7 +6,8 @@ using UnityEngine.UI;
 public class Player : Entity
 {
     [SerializeField] private Slider healthSlider;
-
+    float regen = 2f;
+    public float attackPower = 15f;
 
     [SerializeField]
     float Integrity
@@ -21,33 +22,45 @@ public class Player : Entity
         set { maxIntegrity = value; }
     }
 
-
-    public float moveSpeed = 5f;
-
-    public Camera cam;
+    public Transform Barrel;
+    public GameObject bulletPrefab;
+    public float bulletForce = 20f;
 
     Vector2 movement;
     Vector2 mousePos;
+    public float moveSpeed = 5f;
 
     Rigidbody2D rb;
+    AudioSource asrc;
+
+    public Camera cam;
+    public AudioClip gunShoot;
 
     private void Start()
     {
+        asrc = GetComponent<AudioSource>();
         rb = GetComponent<Rigidbody2D>();
         integrity = maxIntegrity;
         healthSlider.maxValue = maxIntegrity;
     }
 
-    private void LateUpdate()
+    private void Update()
+    {
+        integrity += Time.deltaTime * regen;
+
+        if (Input.GetButtonDown("Fire1"))
+        {
+            Shoot();
+        }
+    }
+
+    void FixedUpdate()
     {
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
 
         mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
-    }
 
-    void FixedUpdate()
-    {
         rb.MovePosition(rb.position + movement * moveSpeed * Time.deltaTime);
 
         Vector2 lookDir = mousePos - rb.position;
@@ -71,5 +84,16 @@ public class Player : Entity
         //healthSlider.value = Mathf.Lerp(healthSlider.value, integrity, t);
         healthSlider.maxValue = maxIntegrity;
         healthSlider.value = integrity;
+    }
+
+
+
+    void Shoot()
+    {
+        GameObject bullet = Instantiate(bulletPrefab, Barrel.position, Barrel.rotation);
+        bullet.GetComponent<Bullet>().plr = this;
+        Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+        rb.AddForce(Barrel.up * bulletForce, ForceMode2D.Impulse);
+        asrc.PlayOneShot(gunShoot);
     }
 }

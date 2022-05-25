@@ -7,11 +7,19 @@ public class Crystal : Entity
 {
     [SerializeField] private Slider healthSlider;
     [SerializeField] GameObject crystal;
+    [SerializeField] Color color;
+
     Quaternion begin;
     Quaternion end;
     float timer = 0;
     float interval = 1;
     float scaleTimer = 100;
+
+    Material mat;
+    AudioSource aSrc;
+
+    [SerializeField] AudioClip clink;
+
 
     [SerializeField] float Integrity
     {
@@ -31,6 +39,9 @@ public class Crystal : Entity
 
         healthSlider.maxValue = maxIntegrity;
         healthSlider.value = integrity;
+
+        aSrc = GetComponent<AudioSource>();
+        mat = crystal.GetComponent<MeshRenderer>().materials[0];
     }
 
     // Update is called once per frame
@@ -47,16 +58,20 @@ public class Crystal : Entity
         float t = Mathf.SmoothStep(0, 1, timer / interval);
         crystal.transform.rotation = Quaternion.Slerp(begin, end, t);
 
-        float scale = Mathf.Exp(-scaleTimer*4);
+        float scale = Mathf.Exp(-scaleTimer * 4);
         crystal.transform.localScale = new Vector3(1,1,1) * (0.5f+scale/4);
-
+        mat.color = Color.Lerp(color, Color.red, scale);
+        
         healthSlider.maxValue = maxIntegrity;
         healthSlider.value = integrity;
+
+
     }
 
     public override void OnHealthChanged(float delta)
     {
         scaleTimer = 0;
+        aSrc.PlayOneShot(clink);
     }
 
     public override void OnDeath()

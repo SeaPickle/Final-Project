@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-
+    public Player plr;
     public GameObject hitEffect;
 
-    void OnCollisionEnter2D(Collision2D collision)
+    void OnTriggerEnter2D(Collider2D other)
     {
-        if (collision.gameObject.tag == "Enemy")
+        if (other.gameObject.tag == "Enemy")
         {
             Score.scoreValue += 15;
-            Destroy(collision.gameObject);
+            other.gameObject.GetComponent<Entity>().ChangeHealth(-plr.attackPower);
         }
 
         GameObject effect = Instantiate(hitEffect, transform.position, Quaternion.identity);

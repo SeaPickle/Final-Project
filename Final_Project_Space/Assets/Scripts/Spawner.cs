@@ -24,7 +24,6 @@ public class Spawner : MonoBehaviour
     private void Spawn()
     {
         nextSpawnTime = Time.time + spawnDelay;
-        Instantiate(enemyPrefab, transform.position, transform.rotation);
     }
 
     private bool ShouldSpawn()

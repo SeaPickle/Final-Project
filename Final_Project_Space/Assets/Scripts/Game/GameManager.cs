@@ -15,6 +15,9 @@ public class GameManager : MonoBehaviour
     List<Transform> spawnpoints = new List<Transform>();
     AudioSource asrc;
     AudioClip pass;
+    AudioClip death;
+    AudioClip hit;
+
     private void Start()
     {
         crystal = GameObject.Find("Crystal").GetComponent<Crystal>();
@@ -22,11 +25,13 @@ public class GameManager : MonoBehaviour
 
         asrc = GetComponent<AudioSource>();
         pass = Resources.Load<AudioClip>("Audio/Effects/correct-soft-beep-2_C_major");
+        death = Resources.Load<AudioClip>("Audio/Effects/Death");
 
         foreach (Transform child in spawnContainer.transform)
         {
             spawnpoints.Add(child);
         }
+        if (wave != 1) asrc.PlayOneShot(pass);
     }
 
     int wave = 0;
@@ -70,6 +75,11 @@ public class GameManager : MonoBehaviour
         else
             e.target = player.transform;
         e.transform.parent = enemyContainer;
+    }
+    
+    public void Death()
+    {
+        asrc.PlayOneShot(death);
     }
 
     public void UpdateUI()

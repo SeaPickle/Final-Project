@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Enemy : Entity
 {
@@ -8,10 +9,15 @@ public class Enemy : Entity
     public float speed = 3f;
     [SerializeField] private float attackDamage = 10f;
     [SerializeField] private float attackSpeed = 1f;
+    [SerializeField] private Slider healthbar;
     private float canAttack;
+    GameObject body;
+    
 
     public Transform target;
     Rigidbody2D rb;
+    AudioSource asrc;
+    AudioClip hit;
 
     [SerializeField]
     float Integrity
@@ -29,7 +35,10 @@ public class Enemy : Entity
     void Start()
     {
         canAttack = 0f;
+        body = transform.Find("Body").gameObject;
+        hit = Resources.Load<AudioClip>("Audio/Effects/EnemyHit");
         rb = GetComponent<Rigidbody2D>();
+        asrc = GetComponent<AudioSource>();
     }
     
     void FixedUpdate()
@@ -42,12 +51,15 @@ public class Enemy : Entity
 
             Vector2 deltaPos = target.position - transform.position;
             float angle = Mathf.Atan2(deltaPos.y, deltaPos.x) * Mathf.Rad2Deg - 90;
-            transform.rotation = Quaternion.Euler(0, 0, angle);
+            body.transform.rotation = Quaternion.Euler(0, 0, angle);
 
             //rb.AddForce(dir * step * 10);
             //transform.position = Vector2.MoveTowards(transform.position, target.position, step);
 
             canAttack += Time.deltaTime;
+
+            healthbar.maxValue = maxIntegrity;
+            healthbar.value = integrity;
         }
     }
 
@@ -74,6 +86,10 @@ public class Enemy : Entity
         }
     }
 
+    public override void OnHealthChanged(float delta)
+    {
+        asrc.PlayOneShot(hit);
+    }
     public override void OnDeath()
     {
         Destroy(gameObject);

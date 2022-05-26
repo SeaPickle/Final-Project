@@ -36,8 +36,11 @@ public class Player : Entity
     public Camera cam;
     public AudioClip gunShoot;
 
+    GameManager game;
+
     private void Start()
     {
+        game = GameObject.Find("GameManager").GetComponent<GameManager>();
         asrc = GetComponent<AudioSource>();
         rb = GetComponent<Rigidbody2D>();
         integrity = maxIntegrity;
@@ -75,6 +78,7 @@ public class Player : Entity
     public override void OnDeath()
     {
         LevelManager.instance.GameOver();
+        game.Death();
         gameObject.SetActive(false);
     }
 

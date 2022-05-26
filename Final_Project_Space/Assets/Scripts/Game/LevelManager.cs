@@ -16,12 +16,15 @@ public class LevelManager : MonoBehaviour
     {
         UIManager _ui = GetComponent<UIManager>();
 
-        Debug.Log("UI: " + _ui);
         if (_ui != null)
         {
             _ui.ToggleDeathPanel();
-        } else {
-        
+            Time.timeScale = 0;
+
+        }
+        else
+        {
+
         }
     }
 }

@@ -9,6 +9,7 @@ public class StateManager : MonoBehaviour
     {
         Score.scoreValue = 0;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        Time.timeScale = 1;
     }
 
     public void ChangeSceneByName(string name)
@@ -16,6 +17,7 @@ public class StateManager : MonoBehaviour
         if (name != null)
         {
             SceneManager.LoadScene(name);
+            Time.timeScale = 1;
         }
     }
 }

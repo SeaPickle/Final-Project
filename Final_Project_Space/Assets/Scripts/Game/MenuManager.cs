@@ -12,10 +12,10 @@ public class MenuManager : MonoBehaviour
         SceneManager.LoadScene(name);
     }
 
-    public void ToggleTutorialView()
+    public void ToggleTutorialView(bool isOn)
     {
-        menuPanel.SetActive(!menuPanel.activeSelf);
-        tutorialPanel.SetActive(!tutorialPanel.activeSelf);
+        menuPanel.SetActive(!isOn);
+        tutorialPanel.SetActive(isOn);
     }
 
     public void ExitGame()

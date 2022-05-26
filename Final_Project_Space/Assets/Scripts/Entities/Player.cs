@@ -78,7 +78,7 @@ public class Player : Entity
     public override void OnDeath()
     {
         LevelManager.instance.GameOver();
-        game.Death();
+        game.PlayerDeath();
         gameObject.SetActive(false);
     }
 

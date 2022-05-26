@@ -17,6 +17,7 @@ public class Crystal : Entity
 
     Material mat;
     AudioSource aSrc;
+    GameManager game;
 
     [SerializeField] AudioClip clink;
 
@@ -42,6 +43,7 @@ public class Crystal : Entity
 
         aSrc = GetComponent<AudioSource>();
         mat = crystal.GetComponent<MeshRenderer>().materials[0];
+        game = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     // Update is called once per frame
@@ -77,6 +79,7 @@ public class Crystal : Entity
     public override void OnDeath()
     {
         LevelManager.instance.GameOver();
+        game.CrystalDeath();
         gameObject.SetActive(false);
     }
 }

@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
 
     int wave = 0;
     int toSpawn = 0;
-    float spawnCooldown = 2f;
+    float spawnCooldown = 1f;
     float spawnTimer = 0f;
     
 

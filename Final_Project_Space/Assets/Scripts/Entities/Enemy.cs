@@ -10,7 +10,7 @@ public class Enemy : Entity
     [SerializeField] private float attackSpeed = 1f;
     private float canAttack;
 
-    Transform target;
+    public Transform target;
     Rigidbody2D rb;
 
     [SerializeField]
@@ -34,12 +34,16 @@ public class Enemy : Entity
     
     void FixedUpdate()
     {
-        target = GameManager.crystal.transform;
         if (target != null)
         {
             float step = speed * Time.deltaTime;
-            Vector2 dir = ((Vector2)(target.position-transform.position)).normalized;
+            Vector2 dir = ((Vector2)(target.position-transform.position)).normalized; 
             rb.MovePosition((Vector2)transform.position + dir * step);
+
+            Vector2 deltaPos = target.position - transform.position;
+            float angle = Mathf.Atan2(deltaPos.y, deltaPos.x) * Mathf.Rad2Deg - 90;
+            transform.rotation = Quaternion.Euler(0, 0, angle);
+
             //rb.AddForce(dir * step * 10);
             //transform.position = Vector2.MoveTowards(transform.position, target.position, step);
 

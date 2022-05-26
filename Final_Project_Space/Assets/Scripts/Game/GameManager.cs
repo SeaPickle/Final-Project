@@ -6,10 +6,11 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public static Crystal crystal;
+    public static Player player;
     [SerializeField] GameObject spawnContainer;
     [SerializeField] Text waveText;
     [SerializeField] Text remainingText;
-    [SerializeField] Enemy enemyPrefab;
+    [SerializeField] Enemy[] enemyPrefabs;
     [SerializeField] Transform enemyContainer;
     List<Transform> spawnpoints = new List<Transform>();
     AudioSource asrc;
@@ -17,6 +18,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         crystal = GameObject.Find("Crystal").GetComponent<Crystal>();
+        player = GameObject.Find("Player").GetComponent<Player>();
 
         asrc = GetComponent<AudioSource>();
         pass = Resources.Load<AudioClip>("Audio/Effects/correct-soft-beep-2_C_major");
@@ -39,7 +41,7 @@ public class GameManager : MonoBehaviour
         {
             wave++;
             toSpawn = wave * 2 + 10;
-            spawnTimer = 0f;
+            spawnTimer = -2f;
             if (wave != 1) asrc.PlayOneShot(pass);
         }
         spawnTimer += Time.deltaTime;
@@ -47,12 +49,27 @@ public class GameManager : MonoBehaviour
         {
             toSpawn--;
             spawnTimer -= spawnCooldown;
-            Vector2 spawnPos = spawnpoints[Random.Range(0, spawnpoints.Count - 1)].position;
-            Enemy e = Instantiate(enemyPrefab, spawnPos, transform.rotation);
-            e.transform.parent = enemyContainer;
+            float rand = Random.Range(0f, 1f);
+            int type;
+            if (rand < 0.75f)
+                type = 0;
+            else
+                type = 1;
+            SpawnEnemy(type);
         }
         
         UpdateUI();
+    }
+
+    public void SpawnEnemy(int type) 
+    {
+        Vector2 spawnPos = spawnpoints[Random.Range(0, spawnpoints.Count - 1)].position;
+        Enemy e = Instantiate(enemyPrefabs[type], spawnPos, transform.rotation);
+        if (type == 0)
+            e.target = crystal.transform;
+        else
+            e.target = player.transform;
+        e.transform.parent = enemyContainer;
     }
 
     public void UpdateUI()
